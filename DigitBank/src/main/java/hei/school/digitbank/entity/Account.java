@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Account {
-    private Long accountNumber;
+    private Integer accountNumber;
     private String customerName;
     private Date customerBirthdate;
     private Double netMonthlySalary;

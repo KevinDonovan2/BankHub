@@ -7,6 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     private static DatabaseConnector instance;
     private Connection connection;
+
     private DatabaseConnector() {
         try {
             String dbUrl = System.getenv("DB_URL");
@@ -23,8 +24,21 @@ public class DatabaseConnector {
         }
         return instance;
     }
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
+        if (!isConnectionOpen()) {
+            String dbUrl = System.getenv("DB_URL");
+            String username = System.getenv("DB_USERNAME");
+            String password = System.getenv("DB_PASSWORD");
+            this.connection = DriverManager.getConnection(dbUrl, username, password);
+        }
         return connection;
+    }
+    private boolean isConnectionOpen() {
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
     }
     public void closeConnection() {
         try {

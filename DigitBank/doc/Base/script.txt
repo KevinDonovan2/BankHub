@@ -5,8 +5,8 @@ CREATE TABLE account (
   account_number SERIAL PRIMARY KEY,
   customer_name VARCHAR(255) NOT NULL,
   customer_birthdate DATE NOT NULL,
-  net_monthly_salary DOUBLE  NOT NULL,
-  main_balance DOUBLE NOT NULL,
+  net_monthly_salary DOUBLE PRECISION NOT NULL,
+  main_balance DOUBLE PRECISION NOT NULL,
   credit_authorized DECIMAL NOT NULL,
   interest_rate_7d DECIMAL NOT NULL,
   interest_rate_after_7d DECIMAL NOT NULL,
@@ -19,9 +19,9 @@ CREATE TABLE account (
 CREATE TABLE operation (
   id_operation SERIAL PRIMARY KEY,
   operation_type VARCHAR(255) NOT NULL,
-  amount DOUBLE NOT NULL,
-  apply_date DATETIME NOT NULL,
-  register_date DATETIME NOT NULL,
+  amount DOUBLE PRECISION NOT NULL,
+  apply_date TIMESTAMP NOT NULL,
+  register_date TIMESTAMP NOT NULL,
   account_number INTEGER NOT NULL,
   FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
@@ -52,9 +52,9 @@ CREATE TABLE transactions (
 
 CREATE TABLE transfert (
   id_transfert SERIAL PRIMARY KEY,
-  amount DOUBLE NOT NULL,
-  apply_date DATETIME NOT NULL,
-  register_date DATETIME NOT NULL,
+  amount DOUBLE PRECISION NOT NULL,
+  apply_date TIMESTAMP NOT NULL,
+  register_date TIMESTAMP NOT NULL,
   reason VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
   account_number INTEGER NOT NULL,
@@ -66,10 +66,10 @@ CREATE TABLE transfert (
 
 CREATE TABLE account_statement (
   id_statement SERIAL PRIMARY KEY,
-  date DATE NOT NULL,
+  date TIMESTAMP NOT NULL,
   reason VARCHAR(255) NOT NULL,
-  debit_balance DOUBLE NOT NULL,
-  credit_balance DOUBLE NOT NULL,
+  debit_balance DOUBLE PRECISION NOT NULL,
+  credit_balance DOUBLE PRECISION NOT NULL,
   account_number INTEGER NOT NULL,
   FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
