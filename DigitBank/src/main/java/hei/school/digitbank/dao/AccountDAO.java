@@ -1,12 +1,12 @@
 package hei.school.digitbank.dao;
-
 import hei.school.digitbank.dbconnection.DatabaseConnector;
 import hei.school.digitbank.entity.Account;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Repository
 public class AccountDAO {
     private static final String TABLE_NAME = "account";
 
@@ -39,7 +39,7 @@ public class AccountDAO {
         }
         return null;
     }
-
+   //  Answer: F1 : Création et modification des informations d’un compte
     public void save(Account account) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE account_number = ?";
@@ -77,7 +77,6 @@ public class AccountDAO {
             throw new RuntimeException("Failed to save account", e);
         }
     }
-
     public void delete(Integer accountNumber) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "DELETE FROM " + TABLE_NAME + " WHERE account_number = ?";
@@ -88,7 +87,6 @@ public class AccountDAO {
             throw new RuntimeException("Failed to delete account", e);
         }
     }
-
     private Account mapResultSetToAccount(ResultSet resultSet) throws SQLException {
         return new Account(
                 resultSet.getInt("account_number"),
@@ -101,6 +99,35 @@ public class AccountDAO {
                 resultSet.getDouble("interest_rate_after_7d"),
                 resultSet.getBoolean("decouvert_autorize")
         );
+    }
+    // F2 : Gestion de retrait d’argent
+    public boolean withdraw(Integer accountNumber, Double amount) {
+        try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
+            String query = "SELECT * FROM account WHERE account_number = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, accountNumber);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Double mainBalance = resultSet.getDouble("main_balance");
+                Double creditAuthorized = resultSet.getDouble("credit_authorized");
+                Boolean decouvertAutorise = resultSet.getBoolean("decouvert_autorize");
+
+                if (mainBalance + creditAuthorized >= amount || decouvertAutorise) {
+                    mainBalance -= amount;
+                    String updateQuery = "UPDATE account SET main_balance = ? WHERE account_number = ?";
+                    PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                    updateStatement.setDouble(1, mainBalance);
+                    updateStatement.setInt(2, accountNumber);
+                    updateStatement.executeUpdate();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to process withdrawal", e);
+        }
+        return false;
     }
 }
 
