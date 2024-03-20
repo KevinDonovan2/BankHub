@@ -6,32 +6,32 @@ import java.util.List;
 
 public class TransfertDAOTest {
     public static void main(String[] args) {
-        TransfertDAO transfertDAO = new TransfertDAO();
+        TransferDAO transfertDAO = new TransferDAO();
         // findAll
         System.out.println("All transfers:");
-        List<Transfert> transferts = transfertDAO.findAll();
-        for (Transfert transfert : transferts) {
-            System.out.println(transfert);
+        List<Transfer> transfers = transferDAO.findAll();
+        for (Transfer transfer : transfers) {
+            System.out.println(transfer);
         }
         // findById
-        Integer transfertIdToFind = 1;
+        Integer transferIdToFind = 1;
         System.out.println("\nTransfer found by ID:");
-        Transfert transfert = transfertDAO.findById(transfertIdToFind);
+        Transfer transfer = transferDAO.findById(transferIdToFind);
         if (transfert != null) {
-            System.out.println(transfert);
+            System.out.println(transfer);
         } else {
-            System.out.println("No transfer found with the ID " + transfertIdToFind);
+            System.out.println("No transfer found with the ID " + transferIdToFind);
         }
         // save
-        Transfert newTransfert = new Transfert(4, 100.0, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "Test transfer", "Pending", 3, 2);
+        Transfer newTransfer = new Transfer(4, 100.0, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "Test transfer", "Pending", 3, 2);
         System.out.println("\n New transfer registration:");
-        transfertDAO.save(newTransfert);
+        transferDAO.save(newTransfer);
         System.out.println("New transfer successfully registered.");
 
         // delete
-        Integer transfertIdToDelete = 4;
+        Integer transferIdToDelete = 4;
         System.out.println("\n Deleting a transfer:");
-        transfertDAO.delete(transfertIdToDelete);
+        transferDAO.delete(transferIdToDelete);
         System.out.println("Transfer successfully deleted.");
     }
 }
