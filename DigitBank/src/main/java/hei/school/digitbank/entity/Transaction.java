@@ -8,9 +8,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Transaction {
-    private Long idTransaction;
+    private Integer idTransaction;
     private String descriptions;
-    private Long idOperation;
-    private Long idCategory;
+    private Integer idOperation;
+    private Integer idCategory;
 }
 

@@ -8,7 +8,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Category {
-    private Long idCategory;
+    private Integer idCategory;
     private String categoryName;
     private String descriptions;
 }
