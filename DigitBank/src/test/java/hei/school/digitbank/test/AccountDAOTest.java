@@ -25,7 +25,7 @@ public class AccountDAOTest {
             System.out.println("No account found with the number " + accountNumberToFind);
         }
         // save
-        Account newAccount = new Account(3, "user test", new Date(System.currentTimeMillis()), 3000.0, 5000.0, 1000.0, 0.01, 0.02, true);
+        Account newAccount = new Account(3, "user test", new Date(System.currentTimeMillis()), 3000.0, 5000.0, 0.0, 0.0, true);
         System.out.println("\n New account registration :");
         accountDAO.save(newAccount);
         System.out.println("New account successfully registered.");

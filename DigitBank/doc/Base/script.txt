@@ -7,11 +7,17 @@ CREATE TABLE account (
   customer_birthdate DATE NOT NULL,
   net_monthly_salary DOUBLE PRECISION NOT NULL,
   main_balance DOUBLE PRECISION NOT NULL,
-  credit_authorized DECIMAL NOT NULL,
-  interest_rate_7d DECIMAL NOT NULL,
-  interest_rate_after_7d DECIMAL NOT NULL,
   decouvert_autorize BOOLEAN NOT NULL
 );
+ALTER TABLE account
+DROP COLUMN credit_authorized,
+DROP COLUMN interest_rate_7d,
+DROP COLUMN interest_rate_after_7d;
+
+ALTER TABLE account
+ADD COLUMN loans DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN interest_on_loans DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD CONSTRAINT check_age CHECK (DATE_PART('year', AGE(customer_birthdate)) >= 21);
 
 #------------------------------------------------------------
 # Table: operation
@@ -50,8 +56,8 @@ CREATE TABLE transactions (
 #------------------------------------------------------------
 # Table: transfert
 
-CREATE TABLE transfert (
-  id_transfert SERIAL PRIMARY KEY,
+CREATE TABLE transfer (
+  id_transfer SERIAL PRIMARY KEY,
   amount DOUBLE PRECISION NOT NULL,
   apply_date TIMESTAMP NOT NULL,
   register_date TIMESTAMP NOT NULL,
@@ -60,6 +66,11 @@ CREATE TABLE transfert (
   account_number INTEGER NOT NULL,
   FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
+ALTER TABLE transfert RENAME TO transfer;
+ALTER TABLE transfer RENAME COLUMN id_transfert TO id_transfer;
+ALTER TABLE transfer ADD COLUMN destinataire_account_number INTEGER;
+ALTER TABLE transfer ADD CONSTRAINT fk_transfer_destinataire_account
+FOREIGN KEY (destinataire_account_number) REFERENCES account(account_number);
 
 #------------------------------------------------------------
 # Table: account_statement
@@ -73,5 +84,13 @@ CREATE TABLE account_statement (
   account_number INTEGER NOT NULL,
   FOREIGN KEY (account_number) REFERENCES account(account_number)
 );
+#------------------------------------------------------------
+CREATE TABLE interest_rates (
+  id SERIAL PRIMARY KEY,
+  interest_rate_7d DOUBLE PRECISION NOT NULL,
+  interest_rate_after_7d DOUBLE PRECISION NOT NULL
+);
+
+
 
 

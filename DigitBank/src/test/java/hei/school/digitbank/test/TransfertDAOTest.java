@@ -23,7 +23,7 @@ public class TransfertDAOTest {
             System.out.println("No transfer found with the ID " + transfertIdToFind);
         }
         // save
-        Transfert newTransfert = new Transfert(4, 100.0, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "Test transfer", "Pending", 3);
+        Transfert newTransfert = new Transfert(4, 100.0, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "Test transfer", "Pending", 3, 2);
         System.out.println("\n New transfer registration:");
         transfertDAO.save(newTransfert);
         System.out.println("New transfer successfully registered.");
