@@ -1,4 +1,5 @@
 package hei.school.digitbank.entity;
+import java.sql.Timestamp;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +10,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Transfert {
-    private Long idTransfert;
+    private Integer idTransfert;
     private Double amount;
-    private Date applyDate;
-    private Date registerDate;
+    private Timestamp applyDate;
+    private Timestamp registerDate;
     private String reason;
     private String state;
-    private Long accountNumber;
+    private Integer accountNumber;
 }
