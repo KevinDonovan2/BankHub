@@ -25,7 +25,7 @@ public class AccountDAOTest {
             System.out.println("No account found with the number " + accountNumberToFind);
         }
         // save
-        Account newAccount = new Account(3, "user test", new Date(System.currentTimeMillis()), 3000.0, 5000.0, 1000.0, 0.05, 0.02, true);
+        Account newAccount = new Account(3, "user test", new Date(System.currentTimeMillis()), 3000.0, 5000.0, 0.0, 0.0, true);
         System.out.println("\n New account registration :");
         accountDAO.save(newAccount);
         System.out.println("New account successfully registered.");
@@ -35,6 +35,18 @@ public class AccountDAOTest {
         System.out.println("\nDeleting an account :");
         accountDAO.delete(accountNumberToDelete);
         System.out.println("Account successfully deleted.");
+
+        // withdraw
+        Integer accountNumber = 1;
+        Double amount = 200.0;
+        System.out.println("\n Testing the withdraw method:");
+        boolean success = accountDAO.withdraw(accountNumber, amount);
+
+        if (success) {
+            System.out.println("Cash withdrawal successfully completed.");
+        } else {
+            System.out.println("Unable to withdraw money. The balance or authorized credit is insufficient.");
+        }
     }
 }
 

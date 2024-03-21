@@ -47,36 +47,47 @@ public class AccountDAO {
             statement.setInt(1, account.getAccountNumber());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String updateQuery = "UPDATE " + TABLE_NAME + " SET customer_name = ?, customer_birthdate = ?, net_monthly_salary = ?, main_balance = ?, credit_authorized = ?, interest_rate_7d = ?, interest_rate_after_7d = ?, decouvert_autorize = ? WHERE account_number = ?";
+                String updateQuery = "UPDATE " + TABLE_NAME + " SET customer_name = ?, customer_birthdate = ?, net_monthly_salary = ?, main_balance = ?, loans = ?, interest_on_loans = ?, decouvert_autorize = ?,  credit_authorized = ? WHERE account_number = ?";
                 PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
                 updateStatement.setString(1, account.getCustomerName());
                 updateStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
                 updateStatement.setDouble(3, account.getNetMonthlySalary());
                 updateStatement.setDouble(4, account.getMainBalance());
-                updateStatement.setDouble(5, account.getCreditAuthorized());
-                updateStatement.setDouble(6, account.getInterestRate7d());
-                updateStatement.setDouble(7, account.getInterestRateAfter7d());
-                updateStatement.setBoolean(8, account.getDecouvertAutorise());
+                updateStatement.setDouble(5, account.getLoans());
+                updateStatement.setDouble(6, account.getInterestOnLoans());
+                updateStatement.setBoolean(7, account.getDecouvertAutorise());
+                updateStatement.setDouble(8, account.getCreditAuthorized());
                 updateStatement.setInt(9, account.getAccountNumber());
                 updateStatement.executeUpdate();
             } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (account_number, customer_name, customer_birthdate, net_monthly_salary, main_balance, credit_authorized, interest_rate_7d, interest_rate_after_7d, decouvert_autorize) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String insertQuery = "INSERT INTO " + TABLE_NAME + " (account_number, customer_name, customer_birthdate, net_monthly_salary, main_balance, loans, interest_on_loans, decouvert_autorize, credit_authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
                 insertStatement.setInt(1, account.getAccountNumber());
                 insertStatement.setString(2, account.getCustomerName());
                 insertStatement.setDate(3, new java.sql.Date(account.getCustomerBirthdate().getTime()));
                 insertStatement.setDouble(4, account.getNetMonthlySalary());
                 insertStatement.setDouble(5, account.getMainBalance());
-                insertStatement.setDouble(6, account.getCreditAuthorized());
-                insertStatement.setDouble(7, account.getInterestRate7d());
-                insertStatement.setDouble(8, account.getInterestRateAfter7d());
-                insertStatement.setBoolean(9, account.getDecouvertAutorise());
+                insertStatement.setDouble(6, account.getLoans());
+                insertStatement.setDouble(7, account.getInterestOnLoans());
+                insertStatement.setBoolean(8, account.getDecouvertAutorise());
                 insertStatement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save account", e);
         }
     }
+    public void updateMainBalance(Integer accountNumber, Double mainBalance) {
+        try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
+            String updateQuery = "UPDATE " + TABLE_NAME + " SET main_balance = ? WHERE account_number = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement.setDouble(1, mainBalance);
+            updateStatement.setInt(2, accountNumber);
+            updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update main balance of account", e);
+        }
+    }
+
     public void delete(Integer accountNumber) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "DELETE FROM " + TABLE_NAME + " WHERE account_number = ?";
@@ -94,40 +105,11 @@ public class AccountDAO {
                 resultSet.getDate("customer_birthdate"),
                 resultSet.getDouble("net_monthly_salary"),
                 resultSet.getDouble("main_balance"),
-                resultSet.getDouble("credit_authorized"),
-                resultSet.getDouble("interest_rate_7d"),
-                resultSet.getDouble("interest_rate_after_7d"),
-                resultSet.getBoolean("decouvert_autorize")
+                resultSet.getDouble("loans"),
+                resultSet.getDouble("interest_on_loans"),
+                resultSet.getBoolean("decouvert_autorize"),
+                resultSet.getDouble("credit_authorized")
         );
-    }
-    // F2 : Gestion de retrait d’argent
-    public boolean withdraw(Integer accountNumber, Double amount) {
-        try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
-            String query = "SELECT * FROM account WHERE account_number = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, accountNumber);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Double mainBalance = resultSet.getDouble("main_balance");
-                Double creditAuthorized = resultSet.getDouble("credit_authorized");
-                Boolean decouvertAutorise = resultSet.getBoolean("decouvert_autorize");
-
-                if (mainBalance + creditAuthorized >= amount || decouvertAutorise) {
-                    mainBalance -= amount;
-                    String updateQuery = "UPDATE account SET main_balance = ? WHERE account_number = ?";
-                    PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-                    updateStatement.setDouble(1, mainBalance);
-                    updateStatement.setInt(2, accountNumber);
-                    updateStatement.executeUpdate();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to process withdrawal", e);
-        }
-        return false;
     }
 }
 
