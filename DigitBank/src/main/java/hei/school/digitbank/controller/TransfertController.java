@@ -1,27 +1,27 @@
 package hei.school.digitbank.controller;
-import hei.school.digitbank.dao.TransfertDAO;
-import hei.school.digitbank.entity.Transfert;
+import hei.school.digitbank.dao.TransferDAO;
+import hei.school.digitbank.entity.Transfer;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/transferts")
 public class TransfertController {
-    private final TransfertDAO transfertDAO;
+    private final TransferDAO transfertDAO;
 
-    public TransfertController(TransfertDAO transfertDAO) {
+    public TransfertController(TransferDAO transfertDAO) {
         this.transfertDAO = transfertDAO;
     }
     @GetMapping
-    public List<Transfert> getAllTransferts() {
+    public List<Transfer> getAllTransferts() {
         return transfertDAO.findAll();
     }
     @GetMapping("/{id}")
-    public Transfert getTransfertById(@PathVariable Integer id) {
+    public Transfer getTransfertById(@PathVariable Integer id) {
         return transfertDAO.findById(id);
     }
     @PostMapping
-    public void createTransfert(@RequestBody Transfert newTransfert) {
+    public void createTransfert(@RequestBody Transfer newTransfert) {
         transfertDAO.save(newTransfert);
     }
     @DeleteMapping("/{id}")

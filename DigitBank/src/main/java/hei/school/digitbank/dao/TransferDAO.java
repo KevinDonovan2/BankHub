@@ -83,15 +83,15 @@ public class TransferDAO {
             throw new RuntimeException("Failed to delete transfer", e);
         }
     }
-    private Transfert mapResultSetToTransfer(ResultSet resultSet) throws SQLException {
-        return new Transfert(
+    private Transfer mapResultSetToTransfer(ResultSet resultSet) throws SQLException {
+        return new Transfer(
                 resultSet.getInt("id_transfer"),
                 resultSet.getDouble("amount"),
                 resultSet.getTimestamp("apply_date"),
                 resultSet.getTimestamp("register_date"),
                 resultSet.getString("reason"),
                 resultSet.getString("state"),
-                resultSet.getInt("account_number")
+                resultSet.getInt("account_number"),
                 resultSet.getInt("destinataire_account_number")
         );
     }
