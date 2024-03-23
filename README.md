@@ -1,4 +1,4 @@
-# BankHub
+# DigitBank
 
 ## Description
 The application enables clients to manage their bank accounts digitally, including account creation, balance inquiry, transfers, expense tracking, and transaction categorization for visualizing financial data through an interactive dashboard.
