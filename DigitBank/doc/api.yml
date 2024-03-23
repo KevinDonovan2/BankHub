@@ -1,219 +1,218 @@
 swagger: "2.0"
 info:
   version: '1.0.0'
-  title: Banque Numérique API
-  description: API pour la gestion d'une banque numérique à Madagascar
+  title: Digital Bank API
+  description: API for managing a digital bank in Madagascar
 basePath: /api
 tags:
-  - name: Comptes
-    description: Opérations relatives aux comptes bancaires
-  - name: Portefeuille Client
-    description: Opérations relatives au portefeuille client
+  - name: Accounts
+    description: Operations related to bank accounts
+  - name: Customer Portfolio
+    description: Operations related to customer portfolio
 schemes:
   - https
 paths:
-  /comptes:
+  /accounts:
     get:
-      summary: Liste des comptes
+      summary: List of accounts
       tags:
-        - Comptes
+        - Accounts
       responses:
         '200':
-          description: Liste des comptes récupérée avec succès
+          description: List of accounts retrieved successfully
           schema:
             type: array
             items:
-              $ref: '#/definitions/Compte'
+              $ref: '#/definitions/Account'
     post:
-      summary: Créer un compte
+      summary: Create an account
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - in: body
           name: body
-          description: Informations du nouveau compte
+          description: Information of the new account
           required: true
           schema:
-            $ref: '#/definitions/CompteInput'
+            $ref: '#/definitions/AccountInput'
       responses:
         '201':
-          description: Compte créé avec succès
+          description: Account created successfully
           schema:
-            $ref: '#/definitions/Compte'
-  /comptes/{id}:
+            $ref: '#/definitions/Account'
+  /accounts/{id}:
     get:
-      summary: Détails d'un compte
+      summary: Account details
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - name: id
           in: path
-          description: ID du compte à récupérer
+          description: ID of the account to retrieve
           required: true
           type: string
       responses:
         '200':
-          description: Détails du compte récupérés avec succès
+          description: Account details retrieved successfully
           schema:
-            $ref: '#/definitions/Compte'
+            $ref: '#/definitions/Account'
     put:
-      summary: Modifier un compte
+      summary: Modify an account
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - name: id
           in: path
-          description: ID du compte à modifier
+          description: ID of the account to modify
           required: true
           type: string
         - in: body
           name: body
-          description: Informations du compte à modifier
+          description: Information of the account to modify
           required: true
           schema:
-            $ref: '#/definitions/CompteInput'
+            $ref: '#/definitions/AccountInput'
       responses:
         '200':
-          description: Compte modifié avec succès
+          description: Account modified successfully
           schema:
-            $ref: '#/definitions/Compte'
-  /comptes/{id}/solde:
+            $ref: '#/definitions/Account'
+  /accounts/{id}/balance:
     get:
-      summary: Consulter le solde d'un compte
+      summary: Check account balance
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - name: id
           in: path
-          description: ID du compte à consulter
+          description: ID of the account to check
           required: true
           type: string
       responses:
         '200':
-          description: Solde du compte récupéré avec succès
+          description: Account balance retrieved successfully
           schema:
             type: object
             properties:
-              solde:
+              balance:
                 type: number
-                description: Solde actuel du compte
-  /comptes/{id}/virements:
+                description: Current balance of the account
+  /accounts/{id}/transfers:
     post:
-      summary: Effectuer un virement
+      summary: Perform a transfer
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - name: id
           in: path
-          description: ID du compte source
+          description: ID of the source account
           required: true
           type: string
         - in: body
           name: body
-          description: Informations du virement
+          description: Transfer information
           required: true
           schema:
-            $ref: '#/definitions/VirementInput'
+            $ref: '#/definitions/TransferInput'
       responses:
         '200':
-          description: Virement effectué avec succès
-  /comptes/{id}/releves:
-    get:
-      summary: Télécharger les relevés de transactions
-      tags:
-        - Comptes
-      parameters:
-        - name: id
-          in: path
-          description: ID du compte à consulter
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Relevés de transactions téléchargés avec succès
-  /comptes/{id}/retraits:
+          description: Transfer performed successfully
+  /accounts/{id}/withdrawals:
     post:
-      summary: Effectuer un retrait d'argent
+      summary: Perform a cash withdrawal
       tags:
-        - Comptes
+        - Accounts
       parameters:
         - name: id
           in: path
-          description: ID du compte à débiter
+          description: ID of the account to debit
           required: true
           type: string
         - in: body
           name: body
-          description: Informations du retrait
+          description: Withdrawal information
           required: true
           schema:
-            $ref: '#/definitions/RetraitInput'
+            $ref: '#/definitions/WithdrawalInput'
       responses:
         '200':
-          description: Retrait effectué avec succès
+          description: Withdrawal performed successfully
 definitions:
-  Compte:
+  Account:
     type: object
     properties:
       id:
         type: string
-        description: ID unique du compte
-      nom:
+        description: Unique ID of the account
+      name:
         type: string
-        description: Nom du client
-      prenoms:
+        description: Name of the client
+      first_name:
         type: string
-        description: Prénom(s) du client
-      date_naissance:
-        type: string
-        format: date
-        description: Date de naissance du client (au format AAAA-MM-JJ)
-      salaire_mensuel_net:
-        type: number
-        description: Salaire mensuel net du client
-    required:
-      - nom
-      - prenoms
-      - date_naissance
-      - salaire_mensuel_net
-  CompteInput:
-    type: object
-    properties:
-      nom:
-        type: string
-        description: Nom du client
-      prenoms:
-        type: string
-        description: Prénom(s) du client
-      date_naissance:
+        description: First name(s) of the client
+      date_of_birth:
         type: string
         format: date
-        description: Date de naissance du client (au format AAAA-MM-JJ)
-      salaire_mensuel_net:
+        description: Date of birth of the client (in YYYY-MM-DD format)
+      monthly_net_salary:
         type: number
-        description: Salaire mensuel net du client
+        description: Client's monthly net salary
     required:
-      - nom
-      - prenoms
-      - date_naissance
-      - salaire_mensuel_net
-  VirementInput:
+      - name
+      - first_name
+      - date_of_birth
+      - monthly_net_salary
+  AccountInput:
     type: object
     properties:
-      montant:
-        type: number
-        description: Montant du virement
-      beneficiaire:
+      name:
         type: string
-        description: ID du compte bénéficiaire du virement
+        description: Name of the client
+      first_name:
+        type: string
+        description: First name(s) of the client
+      date_of_birth:
+        type: string
+        format: date
+        description: Date of birth of the client (in YYYY-MM-DD format)
+      monthly_net_salary:
+        type: number
+        description: Client's monthly net salary
     required:
-      - montant
-      - beneficiaire
-  RetraitInput:
+      - name
+      - first_name
+      - date_of_birth
+      - monthly_net_salary
+  TransferInput:
     type: object
     properties:
-      montant:
+      amount:
         type: number
-        description: Montant du retrait
+        description: Transfer amount
+      beneficiary:
+        type: string
+        description: ID of the beneficiary account
+      reason:
+        type: string
+        description: Reason for the transfer
     required:
-      - montant
+      - amount
+      - beneficiary
+      - reason
+  WithdrawalInput:
+    type: object
+    properties:
+      amount:
+        type: number
+        description: Withdrawal amount
+      source_account:
+        type: string
+        description: ID of the account from which to withdraw
+      date_time:
+        type: string
+        format: date-time
+        description: Date and time of the withdrawal
+    required:
+      - amount
+      - source_account
+      - date_time
