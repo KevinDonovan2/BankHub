@@ -7,10 +7,8 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class Transaction {
-    private Integer idTransaction;
-    private String descriptions;
-    private Integer idOperation;
-    private Integer idCategory;
+public class WithdrawalRequest {
+    private Integer accountNumber;
+    private Double amount;
 }
 

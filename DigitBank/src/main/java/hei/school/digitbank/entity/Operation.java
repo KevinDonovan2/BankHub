@@ -1,4 +1,5 @@
 package hei.school.digitbank.entity;
+import java.sql.Timestamp;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +10,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Operation {
-    private Long idOperation;
+    private Integer idOperation;
     private String operationType;
     private Double amount;
-    private Date applyDate;
-    private Date registerDate;
-    private Long accountNumber;
+    private Timestamp applyDate;
+    private Timestamp registerDate;
+    private Integer accountNumber;
 }

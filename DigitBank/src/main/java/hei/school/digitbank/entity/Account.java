@@ -14,9 +14,12 @@ public class Account {
     private Date customerBirthdate;
     private Double netMonthlySalary;
     private Double mainBalance;
-    private Double creditAuthorized;
-    private Double interestRate7d;
-    private Double interestRateAfter7d;
+    private Double loans;
+    private Double interestOnLoans;
     private Boolean decouvertAutorise;
+    private Double creditAuthorized;
+
+    public Account(int accountNumber, String userTest, java.sql.Date customerBirthdate, double netMonthlySalary, double mainBalance, double loans, double interestOnLoans, boolean decouvertAutorise) {
+    }
 }
 
