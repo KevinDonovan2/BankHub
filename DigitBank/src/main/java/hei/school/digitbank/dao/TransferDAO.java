@@ -10,7 +10,7 @@ import java.util.List;
 public class TransferDAO {
     private static final String TABLE_NAME = "transfer";
 
-    public List<Transfer> findAll() {
+    public static List<Transfer> findAll() {
         List<Transfer> transfers = new ArrayList<>();
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "SELECT * FROM " + TABLE_NAME;
@@ -24,7 +24,7 @@ public class TransferDAO {
         }
         return transfers;
     }
-    public Transfer findById(Integer idTransfer) {
+    public static Transfer findById(Integer idTransfer) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE id_transfer = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -38,7 +38,7 @@ public class TransferDAO {
         }
         return null;
     }
-    public void save(Transfer transfer) {
+    public static void save(Transfer transfer) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE id_transfer = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -73,7 +73,7 @@ public class TransferDAO {
             throw new RuntimeException("Failed to save transfer", e);
         }
     }
-    public void delete(Integer idTransfer) {
+    public static void delete(Integer idTransfer) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "DELETE FROM " + TABLE_NAME + " WHERE id_transfer = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -83,7 +83,7 @@ public class TransferDAO {
             throw new RuntimeException("Failed to delete transfer", e);
         }
     }
-    private Transfer mapResultSetToTransfer(ResultSet resultSet) throws SQLException {
+    private static Transfer mapResultSetToTransfer(ResultSet resultSet) throws SQLException {
         return new Transfer(
                 resultSet.getInt("id_transfer"),
                 resultSet.getDouble("amount"),

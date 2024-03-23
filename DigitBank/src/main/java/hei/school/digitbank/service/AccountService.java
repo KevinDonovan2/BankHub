@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountService {
-    private final AccountDAO accountDAO;
+    private static AccountDAO accountDAO;
     private final TransactionDAO transactionDAO;
     @Autowired
     public AccountService(AccountDAO accountDAO, TransactionDAO transactionDAO) {
@@ -74,7 +74,7 @@ public class AccountService {
         return TimeUnit.DAYS.convert((long) Math.abs(account.getMainBalance()), TimeUnit.MILLISECONDS);
     }
     // Answer F2: Retrait d'argent
-    public boolean withdrawMoney(Integer accountNumber, Double amount) {
+    public static boolean withdrawMoney(Integer accountNumber, Double amount) {
         Account account = accountDAO.findById(accountNumber);
         if (account != null) {
             Double totalBalance = account.getMainBalance() + account.getCreditAuthorized();

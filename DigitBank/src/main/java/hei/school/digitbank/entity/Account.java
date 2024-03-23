@@ -18,5 +18,8 @@ public class Account {
     private Double interestOnLoans;
     private Boolean decouvertAutorise;
     private Double creditAuthorized;
+
+    public Account(int accountNumber, String userTest, java.sql.Date customerBirthdate, double netMonthlySalary, double mainBalance, double loans, double interestOnLoans, boolean decouvertAutorise) {
+    }
 }
 

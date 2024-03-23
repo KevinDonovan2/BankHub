@@ -7,26 +7,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/transferts")
 public class TransfertController {
-    private final TransferDAO transfertDAO;
+    private final TransferDAO transferDAO;
 
     public TransfertController(TransferDAO transfertDAO) {
-        this.transfertDAO = transfertDAO;
+        this.transferDAO = transfertDAO;
     }
     @GetMapping
     public List<Transfer> getAllTransferts() {
-        return transfertDAO.findAll();
+        return transferDAO.findAll();
     }
     @GetMapping("/{id}")
     public Transfer getTransfertById(@PathVariable Integer id) {
-        return transfertDAO.findById(id);
+        return transferDAO.findById(id);
     }
     @PostMapping
     public void createTransfert(@RequestBody Transfer newTransfert) {
-        transfertDAO.save(newTransfert);
+        transferDAO.save(newTransfert);
     }
     @DeleteMapping("/{id}")
     public void deleteTransfert(@PathVariable Integer id) {
-        transfertDAO.delete(id);
+        transferDAO.delete(id);
     }
 }
 

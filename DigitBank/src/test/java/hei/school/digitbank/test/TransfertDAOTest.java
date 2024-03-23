@@ -1,6 +1,6 @@
 package hei.school.digitbank.test;
-import hei.school.digitbank.dao.TransfertDAO;
-import hei.school.digitbank.entity.Transfert;
+import hei.school.digitbank.dao.TransferDAO;
+import hei.school.digitbank.entity.Transfer;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,15 +9,15 @@ public class TransfertDAOTest {
         TransferDAO transfertDAO = new TransferDAO();
         // findAll
         System.out.println("All transfers:");
-        List<Transfer> transfers = transferDAO.findAll();
+        List<Transfer> transfers = TransferDAO.findAll();
         for (Transfer transfer : transfers) {
             System.out.println(transfer);
         }
         // findById
         Integer transferIdToFind = 1;
         System.out.println("\nTransfer found by ID:");
-        Transfer transfer = transferDAO.findById(transferIdToFind);
-        if (transfert != null) {
+        Transfer transfer = TransferDAO.findById(transferIdToFind);
+        if (transfer != null) {
             System.out.println(transfer);
         } else {
             System.out.println("No transfer found with the ID " + transferIdToFind);
@@ -25,13 +25,13 @@ public class TransfertDAOTest {
         // save
         Transfer newTransfer = new Transfer(4, 100.0, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "Test transfer", "Pending", 3, 2);
         System.out.println("\n New transfer registration:");
-        transferDAO.save(newTransfer);
+        TransferDAO.save(newTransfer);
         System.out.println("New transfer successfully registered.");
 
         // delete
         Integer transferIdToDelete = 4;
         System.out.println("\n Deleting a transfer:");
-        transferDAO.delete(transferIdToDelete);
+        TransferDAO.delete(transferIdToDelete);
         System.out.println("Transfer successfully deleted.");
     }
 }

@@ -2,6 +2,7 @@ package hei.school.digitbank.test;
 
 import hei.school.digitbank.dao.AccountDAO;
 import hei.school.digitbank.entity.Account;
+import hei.school.digitbank.service.AccountService;
 
 import java.sql.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public class AccountDAOTest {
         Integer accountNumber = 1;
         Double amount = 200.0;
         System.out.println("\n Testing the withdraw method:");
-        boolean success = accountDAO.withdraw(accountNumber, amount);
+        boolean success = AccountService.withdrawMoney(accountNumber, amount);
 
         if (success) {
             System.out.println("Cash withdrawal successfully completed.");

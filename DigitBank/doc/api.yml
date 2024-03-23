@@ -1,0 +1,104 @@
+Openapi: 3.0.3
+info:
+  version: '1.0.0'
+  title: Banque Numérique API
+  description: API pour la gestion d'une banque numérique à Madagascar
+basePath: /api
+tags:
+  - name: Comptes
+    description: Opérations relatives aux comptes bancaires
+  - name: Portefeuille Client
+    description: Opérations relatives au portefeuille client
+schemes:
+  - https
+paths:
+  /comptes:
+    get:
+      summary: Liste des comptes
+      tags:
+        - Comptes
+      responses:
+        '200':
+          description: Liste des comptes récupérée avec succès
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Compte'
+    post:
+      summary: Créer un compte
+      tags:
+        - Comptes
+      parameters:
+        - in: body
+          name: body
+          description: Informations du nouveau compte
+          required: true
+          schema:
+            $ref: '#/definitions/CompteInput'
+      responses:
+        '200':
+          description: Compte créé avec succès
+          schema:
+            $ref: '#/definitions/Compte'
+  /comptes/{id}:
+    get:
+      summary: Détails d'un compte
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte à récupérer
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Détails du compte récupérés avec succès
+          schema:
+            $ref: '#/definitions/Compte'
+definitions:
+  Compte:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID unique du compte
+      nom:
+        type: string
+        description: Nom du client
+      prenoms:
+        type: string
+        description: Prénom(s) du client
+      date_naissance:
+        type: string
+        format: date
+        description: Date de naissance du client (au format AAAA-MM-JJ)
+      salaire_mensuel_net:
+        type: number
+        description: Salaire mensuel net du client
+    required:
+      - nom
+      - prenoms
+      - date_naissance
+      - salaire_mensuel_net
+  CompteInput:
+    type: object
+    properties:
+      nom:
+        type: string
+        description: Nom du client
+      prenoms:
+        type: string
+        description: Prénom(s) du client
+      date_naissance:
+        type: string
+        format: date
+        description: Date de naissance du client (au format AAAA-MM-JJ)
+      salaire_mensuel_net:
+        type: number
+        description: Salaire mensuel net du client
+    required:
+      - nom
+      - prenoms
+      - date_naissance
+      - salaire_mensuel_net
