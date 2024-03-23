@@ -1,4 +1,4 @@
-Openapi: 3.0.3
+swagger: "2.0"
 info:
   version: '1.0.0'
   title: Banque Numérique API
@@ -36,7 +36,7 @@ paths:
           schema:
             $ref: '#/definitions/CompteInput'
       responses:
-        '200':
+        '201':
           description: Compte créé avec succès
           schema:
             $ref: '#/definitions/Compte'
@@ -56,6 +56,101 @@ paths:
           description: Détails du compte récupérés avec succès
           schema:
             $ref: '#/definitions/Compte'
+    put:
+      summary: Modifier un compte
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte à modifier
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Informations du compte à modifier
+          required: true
+          schema:
+            $ref: '#/definitions/CompteInput'
+      responses:
+        '200':
+          description: Compte modifié avec succès
+          schema:
+            $ref: '#/definitions/Compte'
+  /comptes/{id}/solde:
+    get:
+      summary: Consulter le solde d'un compte
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte à consulter
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Solde du compte récupéré avec succès
+          schema:
+            type: object
+            properties:
+              solde:
+                type: number
+                description: Solde actuel du compte
+  /comptes/{id}/virements:
+    post:
+      summary: Effectuer un virement
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte source
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Informations du virement
+          required: true
+          schema:
+            $ref: '#/definitions/VirementInput'
+      responses:
+        '200':
+          description: Virement effectué avec succès
+  /comptes/{id}/releves:
+    get:
+      summary: Télécharger les relevés de transactions
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte à consulter
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Relevés de transactions téléchargés avec succès
+  /comptes/{id}/retraits:
+    post:
+      summary: Effectuer un retrait d'argent
+      tags:
+        - Comptes
+      parameters:
+        - name: id
+          in: path
+          description: ID du compte à débiter
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Informations du retrait
+          required: true
+          schema:
+            $ref: '#/definitions/RetraitInput'
+      responses:
+        '200':
+          description: Retrait effectué avec succès
 definitions:
   Compte:
     type: object
@@ -102,3 +197,23 @@ definitions:
       - prenoms
       - date_naissance
       - salaire_mensuel_net
+  VirementInput:
+    type: object
+    properties:
+      montant:
+        type: number
+        description: Montant du virement
+      beneficiaire:
+        type: string
+        description: ID du compte bénéficiaire du virement
+    required:
+      - montant
+      - beneficiaire
+  RetraitInput:
+    type: object
+    properties:
+      montant:
+        type: number
+        description: Montant du retrait
+    required:
+      - montant
