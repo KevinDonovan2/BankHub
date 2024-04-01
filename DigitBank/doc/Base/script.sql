@@ -54,7 +54,7 @@ CREATE TABLE transactions (
 );
 
 #------------------------------------------------------------
-# Table: transfert
+# Table: transfer
 
 CREATE TABLE transfer (
   id_transfer SERIAL PRIMARY KEY,

@@ -47,7 +47,7 @@ public class AccountDAO {
             statement.setInt(1, account.getAccountNumber());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String updateQuery = "UPDATE " + TABLE_NAME + " SET customer_name = ?, customer_birthdate = ?, net_monthly_salary = ?, main_balance = ?, loans = ?, interest_on_loans = ?, decouvert_autorize = ?,  credit_authorized = ? WHERE account_number = ?";
+                String updateQuery = "UPDATE " + TABLE_NAME + " SET customer_name = ?, customer_birthdate = ?, net_monthly_salary = ?, main_balance = ?, loans = ?, interest_on_loans = ?, decouvert_autorise = ?,  credit_authorized = ? WHERE account_number = ?";
                 PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
                 updateStatement.setString(1, account.getCustomerName());
                 updateStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
@@ -57,19 +57,18 @@ public class AccountDAO {
                 updateStatement.setDouble(6, account.getInterestOnLoans());
                 updateStatement.setBoolean(7, account.getDecouvertAutorise());
                 updateStatement.setDouble(8, account.getCreditAuthorized());
-                updateStatement.setInt(9, account.getAccountNumber());
                 updateStatement.executeUpdate();
             } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (account_number, customer_name, customer_birthdate, net_monthly_salary, main_balance, loans, interest_on_loans, decouvert_autorize, credit_authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String insertQuery = "INSERT INTO " + TABLE_NAME + " (customer_name, customer_birthdate, net_monthly_salary, main_balance, loans, interest_on_loans, decouvert_autorise, credit_authorized) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                insertStatement.setInt(1, account.getAccountNumber());
-                insertStatement.setString(2, account.getCustomerName());
-                insertStatement.setDate(3, new java.sql.Date(account.getCustomerBirthdate().getTime()));
-                insertStatement.setDouble(4, account.getNetMonthlySalary());
-                insertStatement.setDouble(5, account.getMainBalance());
-                insertStatement.setDouble(6, account.getLoans());
-                insertStatement.setDouble(7, account.getInterestOnLoans());
-                insertStatement.setBoolean(8, account.getDecouvertAutorise());
+                insertStatement.setString(1, account.getCustomerName());
+                insertStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
+                insertStatement.setDouble(3, account.getNetMonthlySalary());
+                insertStatement.setDouble(4, account.getMainBalance());
+                insertStatement.setDouble(5, account.getLoans());
+                insertStatement.setDouble(6, account.getInterestOnLoans());
+                insertStatement.setBoolean(7, account.getDecouvertAutorise());
+                insertStatement.setDouble(8, account.getCreditAuthorized());
                 insertStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -107,7 +106,7 @@ public class AccountDAO {
                 resultSet.getDouble("main_balance"),
                 resultSet.getDouble("loans"),
                 resultSet.getDouble("interest_on_loans"),
-                resultSet.getBoolean("decouvert_autorize"),
+                resultSet.getBoolean("decouvert_autorise"),
                 resultSet.getDouble("credit_authorized")
         );
     }

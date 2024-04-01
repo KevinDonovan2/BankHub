@@ -19,7 +19,5 @@ public class Account {
     private Boolean decouvertAutorise;
     private Double creditAuthorized;
 
-    public Account(int accountNumber, String userTest, java.sql.Date customerBirthdate, double netMonthlySalary, double mainBalance, double loans, double interestOnLoans, boolean decouvertAutorise) {
-    }
 }
 
