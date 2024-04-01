@@ -64,8 +64,11 @@ CREATE TABLE transfer (
   reason VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
   account_number INTEGER NOT NULL,
-  FOREIGN KEY (account_number) REFERENCES account(account_number)
+  destinataire_account_number INTEGER NOT NULL,
+  FOREIGN KEY (account_number) REFERENCES account(account_number),
+  FOREIGN KEY (destinataire_account_number) REFERENCES account(account_number)
 );
+
 ALTER TABLE transfert RENAME TO transfer;
 ALTER TABLE transfer RENAME COLUMN id_transfert TO id_transfer;
 ALTER TABLE transfer ADD COLUMN destinataire_account_number INTEGER;

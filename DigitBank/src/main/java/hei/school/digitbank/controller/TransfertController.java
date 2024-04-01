@@ -3,7 +3,9 @@ import hei.school.digitbank.dao.TransferDAO;
 import hei.school.digitbank.entity.Transfer;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/transferts")
 public class TransfertController {

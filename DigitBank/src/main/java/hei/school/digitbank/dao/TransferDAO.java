@@ -45,7 +45,7 @@ public class TransferDAO {
             statement.setInt(1, transfer.getIdTransfer());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String updateQuery = "UPDATE " + TABLE_NAME + " SET amount = ?, apply_date = ?, register_date = ?, reason = ?, state = ?, account_number = ? WHERE id_transfer = ?";
+                String updateQuery = "UPDATE " + TABLE_NAME + " SET amount = ?, apply_date = ?, register_date = ?, reason = ?, state = ?, account_number = ?,destinataire_account_number = ? WHERE id_transfer = ?";
                 PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
                 updateStatement.setDouble(1, transfer.getAmount());
                 updateStatement.setTimestamp(2, transfer.getApplyDate());
@@ -57,7 +57,7 @@ public class TransferDAO {
                 updateStatement.setInt(8, transfer.getIdTransfer());
                 updateStatement.executeUpdate();
             } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (id_transfer, amount, apply_date, register_date, reason, state, account_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String insertQuery = "INSERT INTO " + TABLE_NAME + " (id_transfer, amount, apply_date, register_date, reason, state, account_number, destinataire_account_number ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
                 insertStatement.setInt(1, transfer.getIdTransfer());
                 insertStatement.setDouble(2, transfer.getAmount());

@@ -3,7 +3,9 @@ import hei.school.digitbank.dao.TransactionDAO;
 import hei.school.digitbank.entity.Transaction;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {

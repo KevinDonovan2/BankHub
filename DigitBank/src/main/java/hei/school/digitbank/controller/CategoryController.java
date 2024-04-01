@@ -3,7 +3,9 @@ import hei.school.digitbank.dao.CategoryDAO;
 import hei.school.digitbank.entity.Category;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {

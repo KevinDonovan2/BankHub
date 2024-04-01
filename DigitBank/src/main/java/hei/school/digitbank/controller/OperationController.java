@@ -3,8 +3,9 @@ import hei.school.digitbank.dao.OperationDAO;
 import hei.school.digitbank.entity.Operation;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-@RestController
+@CrossOrigin(origins = "http://localhost:3000")@RestController
 @RequestMapping("/operations")
 public class OperationController {
     private final OperationDAO operationDAO;
