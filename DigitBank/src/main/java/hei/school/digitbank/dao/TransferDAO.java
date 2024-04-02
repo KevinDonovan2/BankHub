@@ -40,38 +40,24 @@ public class TransferDAO {
     }
     public static void save(Transfer transfer) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE id_transfer = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, transfer.getIdTransfer());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String updateQuery = "UPDATE " + TABLE_NAME + " SET amount = ?, apply_date = ?, register_date = ?, reason = ?, state = ?, account_number = ?,destinataire_account_number = ? WHERE id_transfer = ?";
-                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-                updateStatement.setDouble(1, transfer.getAmount());
-                updateStatement.setTimestamp(2, transfer.getApplyDate());
-                updateStatement.setTimestamp(3, transfer.getRegisterDate());
-                updateStatement.setString(4, transfer.getReason());
-                updateStatement.setString(5, transfer.getState());
-                updateStatement.setInt(6, transfer.getAccountNumber());
-                updateStatement.setInt(7, transfer.getDestinataireAccountNumber());
-                updateStatement.setInt(8, transfer.getIdTransfer());
-                updateStatement.executeUpdate();
-            } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (amount, apply_date, register_date, reason, state, account_number, destinataire_account_number ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                insertStatement.setDouble(2, transfer.getAmount());
-                insertStatement.setTimestamp(3, transfer.getApplyDate());
-                insertStatement.setTimestamp(4, transfer.getRegisterDate());
-                insertStatement.setString(5, transfer.getReason());
-                insertStatement.setString(6, transfer.getState());
-                insertStatement.setInt(7, transfer.getAccountNumber());
-                insertStatement.setInt(8, transfer.getDestinataireAccountNumber());
-                insertStatement.executeUpdate();
+            if (transfer.getIdTransfer() != null) {
+                throw new IllegalArgumentException("ID transfer should not be provided for new transfer.");
             }
+
+            String insertQuery = "INSERT INTO " + TABLE_NAME + " ( amount, reason, state, account_number, destinataire_account_number ) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+            insertStatement.setDouble(1, transfer.getAmount());
+            insertStatement.setString(2, transfer.getReason());
+            insertStatement.setString(3, transfer.getState());
+            insertStatement.setInt(4, transfer.getAccountNumber());
+            insertStatement.setInt(5, transfer.getDestinataireAccountNumber());
+            insertStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save transfer", e);
         }
     }
+
+
     public static void delete(Integer idTransfer) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String query = "DELETE FROM " + TABLE_NAME + " WHERE id_transfer = ?";
