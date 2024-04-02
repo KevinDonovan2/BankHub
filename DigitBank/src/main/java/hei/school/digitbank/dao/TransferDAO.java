@@ -57,9 +57,8 @@ public class TransferDAO {
                 updateStatement.setInt(8, transfer.getIdTransfer());
                 updateStatement.executeUpdate();
             } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (id_transfer, amount, apply_date, register_date, reason, state, account_number, destinataire_account_number ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String insertQuery = "INSERT INTO " + TABLE_NAME + " (amount, apply_date, register_date, reason, state, account_number, destinataire_account_number ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                insertStatement.setInt(1, transfer.getIdTransfer());
                 insertStatement.setDouble(2, transfer.getAmount());
                 insertStatement.setTimestamp(3, transfer.getApplyDate());
                 insertStatement.setTimestamp(4, transfer.getRegisterDate());

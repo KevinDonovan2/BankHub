@@ -1,4 +1,5 @@
 package hei.school.digitbank.dao;
+
 import hei.school.digitbank.dbconnection.DatabaseConnector;
 import hei.school.digitbank.entity.Account;
 import org.springframework.stereotype.Repository;
@@ -6,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 public class AccountDAO {
+
     private static final String TABLE_NAME = "account";
 
     public List<Account> findAll() {
@@ -39,42 +42,32 @@ public class AccountDAO {
         }
         return null;
     }
-   //  Answer: F1 : Création et modification des informations d’un compte
+
     public void save(Account account) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE account_number = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, account.getAccountNumber());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String updateQuery = "UPDATE " + TABLE_NAME + " SET customer_name = ?, customer_birthdate = ?, net_monthly_salary = ?, main_balance = ?, loans = ?, interest_on_loans = ?, decouvert_autorise = ?,  credit_authorized = ? WHERE account_number = ?";
-                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-                updateStatement.setString(1, account.getCustomerName());
-                updateStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
-                updateStatement.setDouble(3, account.getNetMonthlySalary());
-                updateStatement.setDouble(4, account.getMainBalance());
-                updateStatement.setDouble(5, account.getLoans());
-                updateStatement.setDouble(6, account.getInterestOnLoans());
-                updateStatement.setBoolean(7, account.getDecouvertAutorise());
-                updateStatement.setDouble(8, account.getCreditAuthorized());
-                updateStatement.executeUpdate();
-            } else {
-                String insertQuery = "INSERT INTO " + TABLE_NAME + " (customer_name, customer_birthdate, net_monthly_salary, main_balance, loans, interest_on_loans, decouvert_autorise, credit_authorized) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
-                insertStatement.setString(1, account.getCustomerName());
-                insertStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
-                insertStatement.setDouble(3, account.getNetMonthlySalary());
-                insertStatement.setDouble(4, account.getMainBalance());
-                insertStatement.setDouble(5, account.getLoans());
-                insertStatement.setDouble(6, account.getInterestOnLoans());
-                insertStatement.setBoolean(7, account.getDecouvertAutorise());
-                insertStatement.setDouble(8, account.getCreditAuthorized());
-                insertStatement.executeUpdate();
+            if (account.getAccountNumber() != null) {
+                throw new IllegalArgumentException("Account number should not be provided for new accounts.");
+            }
+            account.setAccountNumber(null);
+
+            String insertQuery = "INSERT INTO " + TABLE_NAME + " (customer_name, customer_birthdate, net_monthly_salary, main_balance, decouvert_autorise) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement insertStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            insertStatement.setString(1, account.getCustomerName());
+            insertStatement.setDate(2, new java.sql.Date(account.getCustomerBirthdate().getTime()));
+            insertStatement.setDouble(3, account.getNetMonthlySalary());
+            insertStatement.setDouble(4, account.getMainBalance());
+            insertStatement.setBoolean(5, account.getDecouvertAutorise());
+            insertStatement.executeUpdate();
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                account.setAccountNumber(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save account", e);
         }
     }
+
     public void updateMainBalance(Integer accountNumber, Double mainBalance) {
         try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
             String updateQuery = "UPDATE " + TABLE_NAME + " SET main_balance = ? WHERE account_number = ?";
@@ -97,6 +90,21 @@ public class AccountDAO {
             throw new RuntimeException("Failed to delete account", e);
         }
     }
+
+    private Integer generateAccountNumber() throws SQLException {
+        try (Connection connection = DatabaseConnector.getInstance().getConnection()) {
+            String query = "SELECT MAX(account_number) FROM " + TABLE_NAME;
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                Integer maxAccountNumber = resultSet.getInt(1);
+                return maxAccountNumber + 1;
+            } else {
+                return 1;
+            }
+        }
+    }
+
     private Account mapResultSetToAccount(ResultSet resultSet) throws SQLException {
         return new Account(
                 resultSet.getInt("account_number"),
@@ -111,4 +119,3 @@ public class AccountDAO {
         );
     }
 }
-

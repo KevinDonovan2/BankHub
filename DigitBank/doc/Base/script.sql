@@ -7,7 +7,10 @@ CREATE TABLE account (
   customer_birthdate DATE NOT NULL,
   net_monthly_salary DOUBLE PRECISION NOT NULL,
   main_balance DOUBLE PRECISION NOT NULL,
-  decouvert_autorize BOOLEAN NOT NULL
+  loans DOUBLE PRECISION,
+  interest_on_loans DOUBLE PRECISION,
+  decouvert_autorise BOOLEAN,
+  credit_authorized DOUBLE PRECISION NULL)
 );
 ALTER TABLE account
 DROP COLUMN credit_authorized,
@@ -59,8 +62,8 @@ CREATE TABLE transactions (
 CREATE TABLE transfer (
   id_transfer SERIAL PRIMARY KEY,
   amount DOUBLE PRECISION NOT NULL,
-  apply_date TIMESTAMP NOT NULL,
-  register_date TIMESTAMP NOT NULL,
+  apply_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  register_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   reason VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
   account_number INTEGER NOT NULL,
